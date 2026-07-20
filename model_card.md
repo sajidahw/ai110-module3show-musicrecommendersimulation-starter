@@ -59,16 +59,24 @@ Prompts:
 
 ---
 
-## 6. Limitations and Bias 
+## 6. Limitations and Bias  
 
-Where the system struggles or behaves unfairly. 
+**Features it doesn't consider:**
+- `valence`, `danceability`, and `tempo_bpm` sit unused — a fast, sad song and a slow, happy song with the same genre/mood/energy score identically
+- No listening history, skip behavior, or secondary preferences — a user can express only *one* favorite genre and *one* favorite mood, never "I like lofi but I'm also okay with jazz"
+- No lyrics or language understanding at all
 
-Prompts:  
+**Underrepresented genres/moods:**
+- 15 songs across 12 genres means most genres (classical, reggae, folk, hip hop, metal) have exactly one song each — if that one song is a bad recommendation, the user gets no alternative in that genre at all
+- Partially mitigated for genre: a small genre-relatedness table (see README) now gives 0.5 similarity credit to related genre pairs (e.g. rock↔metal, lofi↔ambient, hip hop↔reggae) instead of scoring every non-exact genre as zero. This gives users of sparse genres a softer fallback, but it's a hand-picked list covering only 9 pairs — genres outside those pairs (e.g. classical vs. hip hop) still score zero, and the groupings reflect one person's judgment of "feel," not a real taxonomy
+- Moods like "euphoric," "aggressive," "melancholic," "nostalgic," and "playful" each also appear on just one track — too sparse to say the system "understands" these moods versus just matching a label, and mood still has no equivalent relatedness table
 
-- Features it does not consider  
-- Genres or moods that are underrepresented  
-- Cases where the system overfits to one preference  
-- Ways the scoring might unintentionally favor some users  
+**Overfitting to one preference:**
+- Confirmed in testing: a lofi/chill profile scored *Library Rain* 0.964 but scored *Storm Runner* (rock), *Gym Hero* (pop), and *Iron Reckoning* (metal) all within 0.13–0.16 of each other — the system can't distinguish degrees of "not a match," it just lumps every non-preferred genre into the same low bucket
+
+**Unintentional favoritism:**
+- Genre/mood matching is exact-string, so a user who types "lo-fi" instead of "lofi" gets zero genre credit — small labeling inconsistencies silently tank a score
+- Users whose favorite genre happens to be well-stocked in the catalog (lofi has 3 songs) get richer, more varied recommendations than users whose favorite genre has only one entry (classical, metal, reggae) — the system's quality is really a function of how the hand-picked dataset happened to be built, not of the scoring logic itself 
 
 ---
 
