@@ -3,6 +3,7 @@ import heapq
 from typing import List, Dict, Tuple, Optional
 from dataclasses import dataclass
 
+
 @dataclass
 class Song:
     """Represents a song and its audio/metadata attributes."""
@@ -16,6 +17,7 @@ class Song:
     valence: float
     danceability: float
     acousticness: float
+
 
 @dataclass
 class UserProfile:
@@ -55,10 +57,10 @@ def load_songs(csv_path: str) -> List[Dict]:
     return songs
 
 
-GENRE_WEIGHT = 0.35
-ENERGY_WEIGHT = 0.30
-MOOD_WEIGHT = 0.20
-ACOUSTIC_WEIGHT = 0.15
+GENRE_WEIGHT = 0.175
+ENERGY_WEIGHT = 0.60
+MOOD_WEIGHT = 0.1286
+ACOUSTIC_WEIGHT = 0.0964
 
 
 def score_song(user_prefs: Dict, song: Dict) -> Tuple[float, List[str]]:
